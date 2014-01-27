@@ -13,31 +13,31 @@ Things you will need to do
 
 NB for ease of use I've included the relevant code from my /etc/httpd/conf/extra/httpd-vhosts.conf to get the site working with the supplied django.wsgi & wsgi_app.py files:
 
-   <VirtualHost *:80>
-      ServerAdmin cardiologytrials_apache@jph.am
-      DocumentRoot "/home/james/sites/cardiologytrials.org/www"
-      ServerName cardiologytrials.org
-      ServerAlias cardiologytrials.org www.cardiologytrials.org
-       ErrorLog "/var/log/httpd/cardiologytrials.org-error_log"
-       CustomLog "/var/log/httpd/cardiologytrials.org" combined
-       <Directory /home/james/sites/cardiologytrials.org/www/>
-                       DirectoryIndex index.php index.htm index.html
-                       AddHandler cgi-script .cgi .pl
-                       Options ExecCGI Indexes FollowSymLinks MultiViews +Includes
-                       AllowOverride None
-                       Order allow,deny
-                       allow from all
-           </Directory>
-   
-       <Directory /home/james/sites/cardiologytrials.org/>
-           Order allow,deny
-           Allow from all
-       </Directory>
-   
-       Alias /static/ /home/james/sites/cardiologytrials.org/www/
-       WSGIScriptAlias / /home/james/sites/cardiologytrials.org/django.wsgi/
-       WSGIScriptAlias /wsgi_app /home/james/sites/cardiologytrials.org/wsgi_app.py
-   </VirtualHost>
+      <VirtualHost *:80>
+         ServerAdmin cardiologytrials_apache@jph.am
+         DocumentRoot "/home/james/sites/cardiologytrials.org/www"
+         ServerName cardiologytrials.org
+         ServerAlias cardiologytrials.org www.cardiologytrials.org
+          ErrorLog "/var/log/httpd/cardiologytrials.org-error_log"
+          CustomLog "/var/log/httpd/cardiologytrials.org" combined
+          <Directory /home/james/sites/cardiologytrials.org/www/>
+                          DirectoryIndex index.php index.htm index.html
+                          AddHandler cgi-script .cgi .pl
+                          Options ExecCGI Indexes FollowSymLinks MultiViews +Includes
+                          AllowOverride None
+                          Order allow,deny
+                          allow from all
+              </Directory>
+      
+          <Directory /home/james/sites/cardiologytrials.org/>
+              Order allow,deny
+              Allow from all
+          </Directory>
+      
+          Alias /static/ /home/james/sites/cardiologytrials.org/www/
+          WSGIScriptAlias / /home/james/sites/cardiologytrials.org/django.wsgi/
+          WSGIScriptAlias /wsgi_app /home/james/sites/cardiologytrials.org/wsgi_app.py
+      </VirtualHost>
 
 Obviously you'll need to change the absolute paths to the directories
 
