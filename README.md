@@ -11,7 +11,7 @@ Things you will need to do
 
 2. Install Django (and configure the werbserver appropriate - see the Django documentation)
 
-NB for ease of use I've included the relevant code from my /etc/httpd/conf/extra/httpd-vhosts.conf to get the site working with the supplied django.wsgi & wsgi_app.py files:
+NB for ease of use I've included the relevant code from my /etc/httpd/conf/extra/httpd-vhosts.conf to get the site working with the supplied django.wsgi & wsgi_app.py files (NB. these files will need editing to reflect the name/path of your project!)
 
       <VirtualHost *:80>
          ServerAdmin cardiologytrials_apache@jph.am
