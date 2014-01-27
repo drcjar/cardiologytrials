@@ -1,0 +1,45 @@
+{% extends "trialsapp/base.html" %}
+
+{% block title %}Hypertension trials - CardiologyTrials.org{% endblock %}
+
+{% block content %}
+{% load trialsapp_extras %}
+<div id="container">	
+	<table class="trialtable">
+		<tr>
+			<th colspan="4"><h1>Evidence for hypertension therapies</h1></th>
+		</tr>
+		<tr>
+			<td colspan="4">
+			<p>Pharmacological therapy for hypertension has been shown to reduce mortality, and many trials use stroke as an outcome. Most patients require multiple agents for good control (<a href="/detail/86/" rel="/short/86/">ALLHAT</a>)</p><br />
+			<p><red>ACE inhibitors</red> (ACEi) seem to reduce stroke in patients 'not classically' hypertensive (<a href="/detail/16/" rel="/short/16/">PROGRESS</a>) and <red>angiotensin receptor blockers</red> (ARB) appear superior to beta-blockers for reducing mortality, even with similar blood pressure reductions (<a href="/detail/17/" rel="/short/17/">LIFE</a>).</p><br />
+			<p><red>Calcium channel blockers</red> (CCB) may give better control than angiotensin receptor blockers (<a href="/detail/84/" rel="/short/84/">VALUE</a>) though this could be off-set by a class benefit from ARBs. May be the agent of choice when adding to an ACEi in high risk patients (<a href="/detail/102/" rel="/short/102/">ACCOMPLISH</a>)</p><br />
+			<p><red>Thiazides</red> seem to give particularly good blood pressure control (<a href="/detail/86/" rel="/short/86/">ALLHAT</a>) though end-points were similar for <red>ACEi</red> and <red>CCB</red>. Also, when added as a second agent to an ACEi, a calcium channel blocker may be a better choice (<a href="/detail/102/" rel="/short/102/">ACCOMPLISH</a>)</p><br />
+			<p><red>Alpha-blockers</red> appear less attractive and in <a href="/detail/86/" rel="/short/86/">ALLHAT</a> this arm was stopped early for increased cardiovascular events and heart failure</p><br />
+			<p><red>Renal denervation</red> offers substantial blood pressure reductions in patients with resistant hypertension (<a href="/detail/98/" rel="/short/98/">Symplicity HTN-2</a>) but blinded trials have not yet been performed.</p>
+			</td>
+		</tr>
+		<tr>
+			<th>Topic</th>
+			<th>Therapy group</th>
+			<th>Therapy</th>
+			<th>Trial</th>
+		</tr>
+		<tr>
+		{% for topic in topics_list|dictsort:"name" %}
+			<td colspan="1" rowspan="{% get_topic_rows topic %}"><a href="#" name="{{ topic }}">{{ topic.displayname }}</a></td>
+			{% for therapy in topic.therapy_set.all|dictsort:"name" %}
+				<td colspan="1" rowspan="{% get_therapy_rows therapy %}">{{ therapy.displayname }}</td>
+				{% for intervention in therapy.intervention_set.all|dictsort:"name" %}
+				<td>{{intervention.displayname }}</td>
+					<td>{% for trial in intervention.trial_set.all|dictsort:"date" %}
+						<a href="/detail/{{ trial.id }}/" rel="/short/{{ trial.id }}/">{{ trial }}{% if not forloop.last %},{% endif %}</a>{% endfor %}
+					</td>
+		</tr>
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+		
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "trialsapp/base.html" %}
+
+{% block title %}Acute coronary syndrome (ACS) trials - CardiologyTrials.org{% endblock %}
+
+{% block content %}
+{% load trialsapp_extras %}
+<div id="container">	
+	<table class="trialtable">
+		<tr>
+			<th colspan="4"><h1>Evidence for acute coronary syndrome (ACS) therapies</h1></th>
+		</tr>
+		<tr>
+			<td colspan="4">
+			<p><red>Antiplatelet therapy</red> is the mainstay of treatment; aspirin (<a href="/detail/22/" rel="/short/22/">ISIS-2</a>) and clopidogrel (<a href="/detail/29/" rel="/short/29/">CURE</a>, <a href="/detail/78/" rel="/short/78/">COMMIT</a>) improve mortality. Newer P2Y12 inhibitors improve mortality further (<a href="/detail/28/" rel="/short/28/">TRITON-TIMI-38</a>, <a href="/detail/27/" rel="/short/27/">PLATO</a>), but possibly not those conservatively managed (<a href="/detail/92/" rel="/short/92/">TRILOGY-ACS</a>). GPIIbIIIa inhibitors have also shown benefit (<a href="/detail/66/" rel="/short/66/">CADILLAC</a>) but are not typically used with bivalirudin (<a href="/detail/65/" rel="/short/65/">HORIZONS-AMI</a>)</p><br />
+			<p><red>Anti-thrombotic therapy</red> is beneficial and Fondaparinux is as effective as Enoxaparin but safer (<a href="/detail/52/" rel="/short/52/">OASIS-5</a>). UFH is only necessary in PCI (<a href="/detail/23/" rel="/short/23/">ISIS-3</a>, <a href="/detail/53/" rel="/short/53/">OASIS-6</a>), but is still beneficial alongside fondaparinux (<a href="/detail/53/" rel="/short/53/">OASIS-6</a>). Bivaliruin does not need UFH/GPIIbIIIa cover and is safer (<a href="/detail/65/" rel="/short/65/">HORIZONS-AMI</a>).</p><br />
+			<p><red>Beta-blockers</red> improve mortality (<a href="/detail/21/" rel="/short/21/">ISIS-1</a>) but caution is needed in first 24 hours (<a href="/detail/78/" rel="/short/78/">COMMIT</a>).</p><br />
+			<p><red>ACE inhibitors</red> improve mortality after ACS (<a href="/detail/24/" rel="/short/24/">ISIS-4</a>, <a href="/detail/83/" rel="/short/83/">GISSI-3</a>), and <red>Aldosterone antagonists</red> are beneficial where LVF/CCF is present (<a href="/detail/55/" rel="/short/55/">EPHESUS</a>).</p><br />
+			<p><red>PCI</red> for STEMI is superior to thrombolysis, even when performed routinely after thrombolysis (<a href="/detail/62/" rel="/short/62/">NORDISTEMI</a>). PCI is also beneficial in NSTEMI patients (<a href="/detail/70/" rel="/short/70/">TACTICS-TIMI-18</a>, <a href="/detail/75/" rel="/short/75/">RITA-3</a>).</p><br />
+			<p><red>Statins</red> reduce recurrent cardiovascular events, with a trend emerging as early as 30 days (<a href="/detail/61/" rel="/short/61/">PROVE-IT</a>). Other secondary prevention medications include Rivaroxaban (<a href="/detail/40/" rel="/short/40/">ATLAS-ACS-2-TIMI-51</a>)
+			</td>
+		</tr>
+		<tr>
+			<th>Topic</th>
+			<th>Therapy group</th>
+			<th>Therapy</th>
+			<th>Trial</th>
+		</tr>
+		<tr>
+		{% for topic in topics_list|dictsort:"name" %}
+			<td colspan="1" rowspan="{% get_topic_rows topic %}"><a href="#" name="{{ topic }}">{{ topic.displayname }}</a></td>
+			{% for therapy in topic.therapy_set.all|dictsort:"name" %}
+				<td colspan="1" rowspan="{% get_therapy_rows therapy %}">{{ therapy.displayname }}</td>
+				{% for intervention in therapy.intervention_set.all|dictsort:"name" %}
+				<td>{{intervention.displayname }}</td>
+					<td>{% for trial in intervention.trial_set.all|dictsort:"date" %}
+						<a href="/detail/{{ trial.id }}/" rel="/short/{{ trial.id }}/">{{ trial }}{% if not forloop.last %},{% endif %}</a>{% endfor %}
+					</td>
+		</tr>
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+		
+</div>
+{% endblock %}

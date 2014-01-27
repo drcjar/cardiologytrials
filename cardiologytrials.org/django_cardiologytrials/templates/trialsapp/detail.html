@@ -1,0 +1,88 @@
+{% extends "trialsapp/base.html" %}
+{% load comments %}
+
+{% block title %}{{ trial.name }} TRIAL - CardiologyTrials.org{% endblock %}
+
+{% block content %}
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<div id="container">	
+	<table class="detailtable" style="margin-bottom:2em; border-top: thin solid #990000;">
+		<tr>
+			<th colspan="2"><h1>{{ trial.name }} TRIAL</h1></th>
+		</tr>
+		<tr>
+			<td class="leadingtd">Problem</td>
+			<td>{{ trial.problem }}</td>
+		</tr>
+		<tr>
+			<td>Format</td>
+			<td>{{ trial.format }}</td>
+		</tr>
+		<tr>
+			<td>Treatment</td>
+			<td>{{ trial.treatment }}</td>
+		</tr>
+		<tr>
+			<td>Control</td>
+			<td>{{ trial.control }}</td>
+		</tr>
+		<tr>
+			<td>Population</td>
+			<td>{{ trial.population }}</td>
+		</tr>
+		<tr>
+			<td>Inclusion criteria</td>
+			<td>{{ trial.inclusion|linebreaksbr }}</td>
+		</tr>
+		<tr>
+			<td>Exclusion criteria</td>
+			<td>{{ trial.exclusion|linebreaksbr }}</td>
+		</tr>
+
+		<tr>
+			<td>Follow-up</td>
+			<td>{{ trial.followup }}</td>
+		</tr>
+		<tr>
+			<td>Primary endpoint</td>
+			<td>{{ trial.primary_endpoint|linebreaksbr }}</td>
+		</tr>
+		<tr>
+			<td>Secondary endpoint(s)</td>
+			<td>{{ trial.secondary_endpoint|linebreaksbr }}</td>
+		</tr>
+		<tr>
+			<td>Details</td>
+			<td>{{ trial.details|linebreaksbr }}</td>
+		</tr>
+		<tr>
+			<td>Brief summary:</td>
+			<td>{{ trial.brief_summary }}</td>
+		</tr>
+	</table>
+
+{% for paper in trial.paper_set.all %}
+	<table class="detailtable">
+		<tr>
+			<th colspan="2">PAPER: {{paper.name}}</th>
+		</tr>
+		<tr>
+			<td class="leadingtd">Date</td>
+			<td>{{paper.date}}</td>
+		</tr>
+		<tr>
+			<td>Journal</td>
+			<td><a href="http://www.ncbi.nlm.nih.gov/pubmed/{{ paper.pmid }}">{{ paper.journal }}</a></td>
+		</tr>
+		<tr>
+			<td>Information</td>
+			<td>{{ paper.benefit_details|linebreaksbr }}</td>
+		</tr>
+	</table>
+{% endfor %}
+
+
+
+</div>
+{% endblock %}

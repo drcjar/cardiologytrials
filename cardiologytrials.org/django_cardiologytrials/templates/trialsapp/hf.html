@@ -1,0 +1,46 @@
+{% extends "trialsapp/base.html" %}
+
+{% block title %}Heart failure trials - CardiologyTrials.org{% endblock %}
+
+{% block content %}
+{% load trialsapp_extras %}
+<div id="container">	
+	<table class="trialtable">
+		<tr>
+			<th colspan="4"><h1>Evidence for heart failure therapies</h1></th>
+		</tr>
+		<tr>
+			<td colspan="4">
+			<p><red>ACE inhibitors</red> improve symptoms in CCF (<a href="/detail/3/" rel="/short/3/">CONSENSUS</a>) and reduce mortality even in asymptomatic patients with low ejection fraction (<a href="/detail/4/" rel="/short/4/">SOLVD</a>). <red>Angiotensin receptor blockers</red> also appear to share these benefits (<a href="/detail/7/" rel="/short/7/">CHARM</a>, <a href="/detail/8/" rel="/short/8/">ValHEFT</a>), though any benefit when added to ACEi is controversial (<a href="/detail/7/" rel="/short/7/">CHARM</a>, <a href="/detail/8/" rel="/short/8/">ValHEFT</a>).</p><br />
+			<p><red>Aldosterone antagonists</red> do confer extra benefit when added to ACEi/ARBs in NYHA 3 (<a href="/detail/54/" rel="/short/54/">RALES</a>) and NYHA 2 CCF (<a href="/detail/56/" rel="/short/56/">EMPHASIS-HF</a>).</p><br />
+			<p><red>Beta-blockers</red> also improve mortality and reduce hospitalisations (<a href="/detail/5/" rel="/short/5/">CIBIS-II</a>) with some evidence of superiority between agents (<a href="/detail/9/" rel="/short/9/">COMET</a>). If blockers such as <red>Ivabradine</red> is an alternative rate-controlling agent that appears beneficial in some patients (<a href="/detail/34/" rel="/short/34/">BEAUTIFUL</a>, <a href="/detail/57/" rel="/short/57/">SHIFT</a>).</p><br />
+			<p>Neither routine anticoagulation with <red>warfarin</red> (<a href="/detail/85/" rel="/short/85/">WARCEF</a>) nor treatment with <red>digoxin</red> (<a href="/detail/67/" rel="/short/67/">DIG</a>) appear beneficial on mortality</p><br />
+			<p>Insertion of <red>cardiac resynchronisation devices</red> (CRT) adds further benefit (<a href="/detail/32/" rel="/short/32/">MADIT-CRT</a>) above the benefits of inserting an implantable cardiac defibrillatory (ICD) (<a href="/detail/33/" rel="/short/33/">SCD-HeFT</a>).</p><br />
+			<p><red>Statins</red> do not add benefit in CCF in patients with no other indication (<a href="/detail/80/" rel="/short/80/">CORONA</a>) and <red>ultrafiltration</red> appears inferior to stepped medical therapy in patients with acute cardio-renal syndrome</p><br />
+			<p><red>Surgical revascularisation</red> may be beneficial in some patients (<a href="/detail/59/" rel="/short/59/">STITCH</a>) but the high crossover in this trial makes interpretation very difficult.</p>
+			</td>
+		</tr>
+		<tr>
+			<th>Topic</th>
+			<th>Therapy group</th>
+			<th>Therapy</th>
+			<th>Trial</th>
+		</tr>
+		<tr>
+		{% for topic in topics_list|dictsort:"name" %}
+			<td colspan="1" rowspan="{% get_topic_rows topic %}"><a href="#" name="{{ topic }}">{{ topic.displayname }}</a></td>
+			{% for therapy in topic.therapy_set.all|dictsort:"name" %}
+				<td colspan="1" rowspan="{% get_therapy_rows therapy %}">{{ therapy.displayname }}</td>
+				{% for intervention in therapy.intervention_set.all|dictsort:"name" %}
+				<td>{{intervention.displayname }}</td>
+					<td>{% for trial in intervention.trial_set.all|dictsort:"date" %}
+						<a href="/detail/{{ trial.id }}/" rel="/short/{{ trial.id }}/">{{ trial }}{% if not forloop.last %},{% endif %}</a>{% endfor %}
+					</td>
+		</tr>
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+		
+</div>
+{% endblock %}

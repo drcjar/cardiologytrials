@@ -1,0 +1,44 @@
+{% extends "trialsapp/base.html" %}
+
+{% block title %}Interventional cardiology trials - CardiologyTrials.org{% endblock %}
+
+{% block content %}
+{% load trialsapp_extras %}
+<div id="container">	
+	<table class="trialtable">
+		<tr>
+			<th colspan="4"><h1>Evidence in interventional cardiology</h1></th>
+		</tr>
+		<tr>
+			<td colspan="4">
+			<p><red>PCI</red> for STEMI is superior to thrombolysis, even when performed routinely after thrombolysis (<a href="/detail/62/" rel="/short/62/">NORDISTEMI</a>). PCI is also beneficial in NSTEMI patients (<a href="/detail/70/" rel="/short/70/">TACTICS-TIMI-18</a>, <a href="/detail/75/" rel="/short/75/">RITA-3</a>). However, in stable coronary artery disease it is much more controversial; <a href="/detail/74/" rel="/short/74/">COURAGE</a> showed no benefit for PCI over medical therapy, though <a href="/detail/93/" rel="/short/93/">FAME-2</a> may have shown some benefit.</p><br />
+			<p>The use of <red>drug-eluting stents</red> appears to reduce revasculuarisation versus bare-metal stents(<a href="/detail/65/" rel="/short/65/">HORIZONS-AMI</a>), though due to late stent thrombosis dual-antiplatelet therapy is recommended. However, this may not need to be continued after 6 months (<a href="/detail/88/" rel="/short/88/">PRODIGY</a>).</p><br />
+			<p><red>Radial access</red> appears as effective as femoral access and also safer (<a href="/detail/89/" rel="/short/89/">RIVAL</a>).</p><br />
+			<p><red>Trans-aortic valve insertion</red> (TAVI) appears a viable option versus surgery in high-risk patients and those not suitable for surgery (<a href="/detail/77/" rel="/short/77/">PARTNER</a>).</p><br />
+			<p><red>Renal denervation</red> appears to drop office blood pressures by over 30 mmHg in those with drug-resistant hypertension, though ambulatory drops are more modest (<a href="/detail/98/" rel="/short/98/">Symplicity HTN-2</a>).</p>
+			</td>
+		</tr>
+		<tr>
+			<th>Topic</th>
+			<th>Therapy group</th>
+			<th>Therapy</th>
+			<th>Trial</th>
+		</tr>
+		<tr>
+		{% for topic in topics_list|dictsort:"name" %}
+			<td colspan="1" rowspan="{% get_topic_rows topic %}"><a href="#" name="{{ topic }}">{{ topic.displayname }}</a></td>
+			{% for therapy in topic.therapy_set.all|dictsort:"name" %}
+				<td colspan="1" rowspan="{% get_therapy_rows therapy %}">{{ therapy.displayname }}</td>
+				{% for intervention in therapy.intervention_set.all|dictsort:"name" %}
+				<td>{{intervention.displayname }}</td>
+					<td>{% for trial in intervention.trial_set.all|dictsort:"date" %}
+						<a href="/detail/{{ trial.id }}/" rel="/short/{{ trial.id }}/">{{ trial }}{% if not forloop.last %},{% endif %}</a>{% endfor %}
+					</td>
+		</tr>
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+		
+</div>
+{% endblock %}

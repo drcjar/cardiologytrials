@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+	<meta name="robots" content="index,follow"/>
+	<meta name="description" content="CardiologyTrials.org - Listing the most important trials in cardiology"/>
+	<meta name="keywords" content="cardiology, trials, cardiology trials, cardio, cardiovascular, trials, database, list, important, statins, statin, ace inhibitor, beta-blocker, heart, surgery, number needed to treat, summary"/>
+
+	<link rel=alternate href="/feeds/latest/rss.xml" title="CardiologyTrials.org - Latest" type="application/rss+xml"/>
+	<link rel=alternate href="/feeds/all/rss.xml" title="CardiologyTrials.org - All" type="application/rss+xml"/>
+	<link rel=stylesheet href="/static/styles/ctonew.css" type="text/css">
+	<link rel=icon href=/static/img/cardio16.png sizes="16x16" type="image/png"/>
+	<link rel=icon href=/static/img/cardio128.png sizes="128x128" type="image/png"/>
+	<link rel=icon href=/static/img/cardio256.png sizes="256x256" type="image/png"/>
+
+	<script type="text/javascript">var _gaq = _gaq || [];_gaq.push(['_setAccount', 'UA-27505794-1']);_gaq.push(['_trackPageview']);(function() {var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);})();</script>
+	<script type="text/javascript">(function() {var po = document.createElement('script');po.type = 'text/javascript'; po.async = true;po.src = 'https://apis.google.com/js/plusone.js';var p = document.getElementsByTagName('script')[0]; p.parentNode.insertBefore(po, p);})();</script>
+	
+	<!--qTip2 http://craigsworks.com/projects/qtip2/-->
+	<link rel="stylesheet" type="text/css" href="http://craigsworks.com/projects/qtip2/packages/latest/jquery.qtip.min.css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://craigsworks.com/projects/qtip2/packages/latest/jquery.qtip.min.js"></script>
+	<style type="text/css">
+	.qtip-wiki{
+		max-width: 440px;
+	}
+
+		.qtip-wiki .qtip-content{
+			padding: 10px;
+			
+			line-height: 12.5px;
+		}
+
+		.qtip-wiki h1{
+			margin: 0 0 7px;
+
+			font-size: 1.5em;
+			line-height: 1em;
+		}
+
+		.qtip-wiki img{ padding: 0 10px 0 0; }
+		
+		.qtip-wiki p{ margin-bottom: 9px; }
+		.qtip-wiki .note{ margin-bottom: 0; font-style: italic; color: #888; }
+	</style>
+	
+	
+	<title>{% block title %}{% endblock %}</title>	
+</head>
+<body>
+	<div id="background"></div>
+    	<div id="header"><a href="/" title="CardiologyTrials.org"><headingtext>CardiologyTrials.org</headingtext></a><br />Explaining the most important trials in cardiology</div>
+
+	<div id="navrow">
+		<ul id="navrow2">
+			<li><a id="all" {% ifequal request.path "/" %}style="background:#ca0002;"{% endifequal %} href="/" title="List all key cardiology trials">All</a></li>
+			<li><a id="acs" {% ifequal request.path "/acs/" %}style="background:#ca0002;"{% endifequal %} href="/acs/" title="Acute coronary syndrome trials">ACS</a></li>
+			<li><a id="af" {% ifequal request.path "/af/" %}style="background:#ca0002;"{% endifequal %} href="/af/"  title="Atrial fibrillation trials">AF</a></li>
+			<li><a id="cad" {% ifequal request.path "/cad/" %}style="background:#ca0002;"{% endifequal %} href="/cad/"  title="Stable coronary heart disease trials">CAD</a></li>
+			<li><a id="hf" {% ifequal request.path "/hf/" %}style="background:#ca0002;"{% endifequal %} href="/hf/"  title="Heart failure trials">Heart failure</a></li>
+			<li><a id="htn" {% ifequal request.path "/htn/" %}style="background:#ca0002;"{% endifequal %} href="/htn/"  title="Hypertension trials">Hypertension</a></li>
+			<li><a id="intervention" {% ifequal request.path "/intervention/" %}style="background:#ca0002;"{% endifequal %} href="/intervention/"  title="Interventional cardiology trials">Intervention</a></li>
+			<li><a id="lipids" {% ifequal request.path "/lipids/" %}style="background:#ca0002;"{% endifequal %} href="/lipids/"  title="Lipids (including statin) trials">Lipids</a></li>
+			<li><a id="ct" {% ifequal request.path "/surgery/" %}style="background:#ca0002;"{% endifequal %} href="/surgery/"  title="Cardiothoracic surgery trials">Surgery</a></li>
+		</ul>
+	</div>
+
+{% load trialsapp_extras %}
+<div id="container">	
+	<table class="trialtable">
+		<tr>
+			<th colspan="4"><h1>Key cardiology trials in evidence based medicine - click on a trial for more information or a topic above for a summary</h1></th>
+		</tr>
+		<tr>
+			<th>Topic</th>
+			<th>Therapy group</th>
+			<th>Therapy</th>
+			<th>Trial</th>
+		</tr>
+		<tr>
+		{% for topic in topics_list|dictsort:"name" %}
+			<td colspan="1" rowspan="{% get_topic_rows topic %}"><a href="/{{ topic|lower }}/" name="{{ topic }}">{{ topic.displayname }}</a></td>
+			{% for therapy in topic.therapy_set.all|dictsort:"name" %}
+				<td colspan="1" rowspan="{% get_therapy_rows therapy %}">{{ therapy.displayname }}</td>
+				{% for intervention in therapy.intervention_set.all|dictsort:"name" %}
+				<td>{{intervention.displayname }}</td>
+					<td>{% for trial in intervention.trial_set.all|dictsort:"date" %}
+						<a href="/detail/{{ trial.id }}/" rel="/short/{{ trial.id }}/">{{ trial }}{% if not forloop.last %},{% endif %}</a>{% endfor %}
+					</td>
+		</tr>
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+		
+</div>
+
+	<div class="footer">
+		<div class="g-plusone" data-size="small" data-annotation="none" data-recommendations="false"></div>
+		<a href="/feeds/latest/rss.xml"><img src="/static/img/rss.png" alt="RSS"/>&nbsp;&nbsp;Subscribe: Latest</a> / <a href="/feeds/all/rss.xml">All</a> - Designed by <a href="http://jamesphoward.com">Dr James P Howard</a> <a href="https://plus.google.com/116243632765725307607?rel=author">(Google+)</a>{% ifequal request.path "/surgery/" %} and maintained by Dr Chris J Bond{% endifequal %}
+	</div>
+	
+	<script class="example" type="text/javascript">
+	// Create the tooltips only on document load
+	$(document).ready(function()
+	{
+		// Make sure to only match links to wikipedia with a rel tag
+		$('a[href*="/detail/"][rel]').each(function()
+		{
+			// We make use of the .each() loop to gain access to each element via the "this" keyword...
+			$(this).qtip(
+			{
+				content: {
+					// Set the text to an image HTML string with the correct src URL to the loading image you want to use
+					text: 'Loading...',
+					ajax: {
+						url: $(this).attr('rel') // Use the rel attribute of each element for the url to load
+					},
+					title: {
+						text: $(this).text() + ' TRIAL', // Give the tooltip a title using each elements text
+						button: true
+					}
+				},
+				position: {
+					at: 'bottom center', // Position the tooltip above the link
+					my: 'top center',
+					viewport: $(window), // Keep the tooltip on-screen at all times
+					effect: false // Disable positioning animation
+				},
+				show: {
+					event: 'click',
+					solo: true // Only show one tooltip at a time
+				},
+				hide: 'unfocus',
+				style: {
+					classes: 'qtip-wiki qtip-light qtip-shadow'
+				}
+			})
+		})
+
+		// Make sure it doesn't follow the link when we click it
+		.click(function(event) { event.preventDefault(); });
+	});
+	</script>
+	
+</body>
+</html>

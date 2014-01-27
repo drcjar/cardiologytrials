@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+	<meta name="robots" CONTENT="NOINDEX, FOLLOW"/>
+	
+	<link rel=stylesheet href="/static/styles/cto.css" type="text/css">
+	
+	<title>{{ trial.name }} TRIAL - CardiologyTrials.org</title>
+	</head>
+	
+	<body>
+	<div class="shortdiv">
+		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+		{{ trial.brief_summary }}<br /><br />
+		<a href="/detail/{{ trial.id }}/">Trial details (more)</a>
+	</div>
+	</body>
+</html>
+

@@ -1,0 +1,43 @@
+{% extends "trialsapp/base.html" %}
+
+{% block title %}Atrial fibrillation (AF) trials - CardiologyTrials.org{% endblock %}
+
+{% block content %}
+{% load trialsapp_extras %}
+<div id="container">	
+	<table class="trialtable">
+		<tr>
+			<th colspan="4"><h1>Evidence for atrial fibrillation (AF) therapies</h1></th>
+		</tr>
+		<tr>
+			<td colspan="4">
+			<p><red>Rate control</red> is non-inferior to <red>rhythm control</red> and may be superior in elderly or co-morbid patients (<a href="/detail/31/" rel="/short/31/">AFFIRM</a>). Strict rate control may provide no further benefits (<a href="/detail/76/" rel="/short/76/">RACE-II</a>)</p><br />
+			<p><red>Anticoagulation</red> is beneficial even in rhythm control (<a href="/detail/31/" rel="/short/31/">AFFIRM</a>). Aspirin is sufficient in low-risk patients (<a href="/detail/49/" rel="/short/49/">SPAF</a>), but anti-thrombotic agents are necessary in high risk patients (<a href="/detail/50/" rel="/short/50/">SPAF-II</a>). Newer agents such as apixiban (<a href="/detail/42/" rel="/short/42/">ARISTOTLE</a>), rivaroxaban (<a href="/detail/43/" rel="/short/43/">ROCKET-AF</a>) and dabigatran (<a href="/detail/30/" rel="/short/30/">RE-LY</a>) may reduce stroke and/or bleeding</p><br />
+			<p><red>Dronedarone</red> may be beneficial in low-risk paroxysmal or persistant AF patients (<a href="/detail/58/" rel="/short/58/">ATHENA</a>) but appears harmful in higher risk patients (<a href="/detail/38/" rel="/short/38/">PALLAS</a>)</p><br />
+			<p><red>Ablation</red> appears successful in those failing rhythm control (<a href="/detail/46/" rel="/short/46/">APAF</a>, <a href="/detail/47/" rel="/short/47/">ThermoCool-AF</a>) but is not successful as a first-line treatment (<a href="/detail/94/" rel="/short/94/">MANTRA-PAF</a>)</p>
+			</td>
+		</tr>
+		<tr>
+			<th>Topic</th>
+			<th>Therapy group</th>
+			<th>Therapy</th>
+			<th>Trial</th>
+		</tr>
+		<tr>
+		{% for topic in topics_list|dictsort:"name" %}
+			<td colspan="1" rowspan="{% get_topic_rows topic %}"><a href="#" name="{{ topic }}">{{ topic.displayname }}</a></td>
+			{% for therapy in topic.therapy_set.all|dictsort:"name" %}
+				<td colspan="1" rowspan="{% get_therapy_rows therapy %}">{{ therapy.displayname }}</td>
+				{% for intervention in therapy.intervention_set.all|dictsort:"name" %}
+				<td>{{intervention.displayname }}</td>
+					<td>{% for trial in intervention.trial_set.all|dictsort:"date" %}
+						<a href="/detail/{{ trial.id }}/" rel="/short/{{ trial.id }}/">{{ trial }}{% if not forloop.last %},{% endif %}</a>{% endfor %}
+					</td>
+		</tr>
+				{% endfor %}
+			{% endfor %}
+		{% endfor %}
+	</table>
+		
+</div>
+{% endblock %}
